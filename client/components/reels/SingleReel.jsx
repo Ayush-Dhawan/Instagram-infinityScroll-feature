@@ -4,7 +4,7 @@ import { ResizeMode, Video } from 'expo-av'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import makeRequest from '../../api';
 
-function SingleReel({id, numLikes, url, index, activeIndex}) {
+const SingleReel = ({id, numLikes, url, index, activeIndex}) => {
     const ref = useRef(null);
     const [liked, setLiked] = useState(false);
     const [numberOfLikes, setNumberOfLikes] = useState(numLikes)
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SingleReel
+export default React.memo(SingleReel)

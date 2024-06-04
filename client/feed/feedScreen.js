@@ -50,7 +50,7 @@ export default function FeedScreen() {
       decelerationRate={'fast'}
     
       onEndReached={() => setStart(start + 5)}
-      onEndReachedThreshold={0.5}
+      onEndReachedThreshold={3}
        />
     </View>
   )
