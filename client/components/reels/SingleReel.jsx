@@ -28,6 +28,7 @@ export const SingleReel = forwardRef((props, parentRef) =>{
 
         // if video is already playing return
         const status = await videoref.current.getStatusAsync();
+        console.log("status: ", status)
         if (status?.isPlaying) {
             return;
         }
@@ -100,6 +101,7 @@ export const SingleReel = forwardRef((props, parentRef) =>{
       <Video
       ref={videoref}
     //   key={index}
+    key={id}
        style ={styles.videoContainer}
        resizeMode={ResizeMode.COVER}
        useNativeControls={false}

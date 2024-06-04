@@ -13,8 +13,10 @@ export default function FeedScreen() {
     const [start, setStart] = useState(0);
 
     const onViewableItemsChanged = useRef(({changed}) => {
+      console.log("celled")
       changed.forEach(element => {
         const cell = videoRefs.current[element.key];
+        console.log(videoRefs , "cell")
         if(cell){
           if(element.isViewable) cell.play();
           else cell.stop();
@@ -51,7 +53,7 @@ export default function FeedScreen() {
       isLooping
       removeClippedSubviews
       viewabilityConfig={{
-        itemVisiblePercentThreshold: 100
+        itemVisiblePercentThreshold: 60
       }}
       onViewableItemsChanged={onViewableItemsChanged.current}
     // onScroll={e => {
@@ -59,7 +61,7 @@ export default function FeedScreen() {
     //     setCurrentReelIndex(index);
     // }}
       pagingEnabled
-      keyExtractor={(item, index) => String(index)}
+      keyExtractor={(item) => item._id.toString()}
       decelerationRate={'normal'}
     
       onEndReached={() => setStart(start + 6)}
