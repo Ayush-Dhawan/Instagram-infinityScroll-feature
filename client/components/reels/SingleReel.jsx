@@ -4,10 +4,67 @@ import { ResizeMode, Video } from 'expo-av'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import makeRequest from '../../api';
 
-function SingleReel({id, numLikes, url, index, activeIndex}) {
-    const ref = useRef(null);
+export const SingleReel = forwardRef((props, parentRef) =>{
+    const {id, numLikes, url} = props
+    const videoref = useRef(null);
     const [liked, setLiked] = useState(false);
     const [numberOfLikes, setNumberOfLikes] = useState(numLikes)
+
+    useImperativeHandle(parentRef, () => ({
+        play,
+        unload,
+        stop
+    }))
+
+    useEffect(() => {
+        return () => unload()
+    }, [])
+
+    const play = async () => {
+        console.log("plays")
+        if (videoref.current == null) {
+            return;
+        }
+
+        // if video is already playing return
+        const status = await videoref.current.getStatusAsync();
+        if (status?.isPlaying) {
+            return;
+        }
+        try {
+            await videoref.current.playAsync();
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    const stop = async () =>{
+        console.log("stopping")
+        if(videoref.current == null){
+            return;
+        }
+        const status = await videoref.current.getStatusAsync();
+        if(!status?.isPlaying){
+            return;
+        }
+        try {
+            await videoref.current.stopAsync();
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+    const unload = async () =>{
+        console.log("unloading")
+        if(videoref.current == null){
+            return;
+        }
+        try {
+            await videoref.current.unloadAsync();
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     const handleLikes = async (id, liked) =>{
         setLiked(!liked);
@@ -41,17 +98,17 @@ function SingleReel({id, numLikes, url, index, activeIndex}) {
 
         </View>
       <Video
-      ref={ref}
-      key={index}
+      ref={videoref}
+    //   key={index}
        style ={styles.videoContainer}
        resizeMode={ResizeMode.COVER}
        useNativeControls={false}
        isLooping
-       shouldPlay={index === activeIndex}
+       shouldPlay={false}
        source={{uri: url}} />
     </View>
   )
-}
+})
 
 
 
